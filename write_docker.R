@@ -1,4 +1,6 @@
-install.packages('readr')
+#install.packages('glue','readr')
+library(readr)
+library(glue)
 write_docker <- function(port, install_pack = '#', packages = unique(renv::dependencies('.')$Package) ) {
   #### Initialize the list of commands
   shiny_files <- c()
