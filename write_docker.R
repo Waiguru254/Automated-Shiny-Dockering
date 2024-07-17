@@ -1,14 +1,15 @@
 #install.packages('glue','readr')
 library(readr)
 library(glue)
-write_docker <- function(port, install_pack = '#', packages = unique(renv::dependencies('.')$Package) ) {
+write_docker <- function(port, install_pack = '#', packages = unique(renv::dependencies('.')$Package), packages_ignore = c('surveycto','fireData') ) {
+  packages_to_install <- unique(renv::dependencies('.')$Package)[!unique(renv::dependencies('.')$Package) %in% c(packages_ignore)]
   #### Initialize the list of commands
   shiny_files <- c()
   ### Creating the shiny image in docker
   shiny_files[1] <-  'FROM rocker/shiny:latest'
   ### Creating the list of packages that is needed for the project
   shiny_files[2] <- paste(install_pack,'RUN R -e "install.packages(c(',paste0("'", 
-                                                                              paste(paste(packages, collapse="', '"),
+                                                                              paste(paste(packages_to_install, collapse="', '"),
                                                                                     collapse="','"), "'"), collapse = "", "",'), dependencies = TRUE)"',sep = "")
   ## Changing the directory of the project
   shiny_files[3] <-  'RUN mkdir /home/shiny-app'
@@ -25,4 +26,5 @@ write_docker <- function(port, install_pack = '#', packages = unique(renv::depen
   ### Creating the command(Exporting the dockerfile)
   readr::write_lines(shiny_files, file = file.path("Dockerfile"))
 }
-write_docker(port = 2222,install_pack = '', packages = c('dplyr', 'ggplot2', 'gapminder'))
+write_docker(port = 1200,install_pack = '')
+
