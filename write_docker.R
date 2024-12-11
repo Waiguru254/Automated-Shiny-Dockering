@@ -33,6 +33,6 @@ write_docker <- function(port, install_pack = '#', packages = unique(renv::depen
   readr::write_lines(shiny_files, file = file.path("Dockerfile"))
 }
 write_docker(port = 1200,install_pack = '')
-
-###docker build -t shiny-docker-demo .
-###docker run -p 8180:8180 shiny-docker-demo
+### Create a function to run the Docker file, Use the paste to create the path to dockering. 
+###system("paste("docker build -t shiny-docker-demo .")
+###system("docker run -p 8180:8180 shiny-docker-demo")
