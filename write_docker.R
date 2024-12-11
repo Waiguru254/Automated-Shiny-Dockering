@@ -34,3 +34,5 @@ write_docker <- function(port, install_pack = '#', packages = unique(renv::depen
 }
 write_docker(port = 1200,install_pack = '')
 
+###docker build -t shiny-docker-demo .
+###docker run -p 8180:8180 shiny-docker-demo
